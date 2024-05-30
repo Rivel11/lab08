@@ -1,0 +1,23 @@
+name: Build and Run Docker
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t message-writer .
+
+    - name: Run Docker container
+      run: docker run --name message-writer-container message-writer
+
+    - name: Copy output file
+      run: docker cp message-writer-container:/usr/src/app/output.txt ./output.txt
+
+    - name: Display output file
+      run: cat ./output.txt
